@@ -5,6 +5,7 @@ import io
 from transformers import AutoProcessor, BlipForConditionalGeneration
 
 # --- Streamlit Page Configuration ---
+# FIX IS HERE: Use st.set_page_config, not st.set_config
 st.set_page_config(page_title="BLIP Image Captioning App", page_icon="📝", layout="centered")
 st.title("📝 Image Captioning with BLIP")
 st.markdown("---") # Visual separator
@@ -131,6 +132,7 @@ selected_num_return_sequences = st.sidebar.slider("Number of Captions to Generat
 
 if uploaded_file is not None:
     # Display the uploaded image
+    image = Image.open(uploaded_file)
     st.image(image, caption='Uploaded Image.', use_column_width=True)
     st.write("")
 
