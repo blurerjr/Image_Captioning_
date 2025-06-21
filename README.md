@@ -1,4 +1,4 @@
-# 📦 Streamlit App Starter Kit 
+# 📦 Image Caption Generator using Attention Mechanism
 ```
 ⬆️ (Replace above with your app's name)
 ```
