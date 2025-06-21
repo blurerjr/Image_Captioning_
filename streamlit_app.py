@@ -51,21 +51,32 @@ class BahdanauAttention(Layer):
 # --- 2. Load Saved Components (at the beginning of your Streamlit app) ---
 @st.cache_resource # Cache the model and tokenizer loading for performance
 def load_assets():
-    # Google Drive URL for the Keras model
-    drive_url = "https://drive.google.com/file/d/1JlXXYzEHIhZd5V9ElF77KnoZyRYRs-ig/view?usp=sharing"
+    # Google Drive URL for the Keras model - USING DIRECT DOWNLOAD LINK FORMAT
+    # Extracted FILE_ID from your provided link: 1JlXXYzEHIhZd5V9ElF77KnoZyRYRs-ig
+    drive_url = "https://drive.google.com/uc?export=download&id=1JlXXYzEHIhZd5V9ElF77KnoZyRYRs-ig"
     local_model_path = "temp_model.keras" # Temporary path on the Streamlit server
 
     # GitHub base URL for other resources (this part is correct)
     github_base_url = "https://raw.githubusercontent.com/blurerjr/Image_Captioning_/refs/heads/master/"
 
     # --- Download the model file from Google Drive ---
-    st.info(f"Downloading model from Google Drive...")
+    st.info(f"Downloading model from Google Drive (using direct link format)...")
     try:
         gdown.download(drive_url, local_model_path, quiet=False) # quiet=False shows download progress
+        
+        # --- IMPORTANT DEBUGGING STEP ---
+        # Verify if the file was actually downloaded
+        if not os.path.exists(local_model_path):
+            st.error(f"Error: Model file '{local_model_path}' was not found after download attempt!")
+            st.warning("This likely means the Google Drive download failed. Check permissions or the link validity.")
+            raise FileNotFoundError(f"Model file not created at {local_model_path}")
+        # Optionally print file size
+        # st.info(f"Downloaded model size: {os.path.getsize(local_model_path) / (1024*1024):.2f} MB")
         st.success("Model downloaded from Google Drive!")
     except Exception as e:
         st.error(f"Failed to download model from Google Drive. Error: {e}")
-        st.warning("Please ensure the Google Drive file is shared as 'Anyone with the link' and the URL is correct.")
+        st.warning("Please ensure the Google Drive file is shared as 'Anyone with the link' and the ID is correct. "
+                   "Sometimes, Google Drive blocks large file downloads from remote servers.")
         raise Exception("Model download failed")
 
     # Load model
@@ -75,7 +86,6 @@ def load_assets():
     )
 
     # --- Download and load tokenizer from GitHub ---
-    # CORRECTED PATH: Directly from the root of the GitHub repo
     tokenizer_github_url = os.path.join(github_base_url, "tokenizer.pkl")
     local_tokenizer_path = "tokenizer.pkl"
     st.info(f"Downloading tokenizer from GitHub...")
@@ -91,7 +101,6 @@ def load_assets():
     os.remove(local_tokenizer_path) # Clean up the downloaded file
 
     # --- Download and load config from GitHub ---
-    # CORRECTED PATH: Directly from the root of the GitHub repo
     config_github_url = os.path.join(github_base_url, "model_config.json")
     local_config_path = "model_config.json"
     st.info(f"Downloading model config from GitHub...")
