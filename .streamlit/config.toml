@@ -4,3 +4,13 @@ backgroundColor="#FFFFFF"
 secondaryBackgroundColor="#F0F2F6"
 textColor="#262730"
 font="sans serif"
+[theme]
+base="dark"
+primaryColor="#90EE90" # Light Green for accents (buttons, sliders, etc.)
+backgroundColor="#1E1E1E" # Dark background
+secondaryBackgroundColor="#2D2D2D" # Slightly lighter dark for secondary elements (like input fields, code blocks)
+textColor="#FAFAFA" # Light text for readability
+font="sans serif"
+
+[client]
+showSidebarNavigation=false # Hides the default "About" and "Settings" if you want a cleaner look
