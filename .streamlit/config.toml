@@ -7,7 +7,7 @@ font="sans serif"
 [theme]
 base="dark"
 primaryColor="#90EE90" # Light Green for accents (buttons, sliders, etc.)
-backgroundColor="#FAFAFA" # Dark background
+backgroundColor="#IEIEIE" # Dark background
 secondaryBackgroundColor="#2D2D2D" # Slightly lighter dark for secondary elements (like input fields, code blocks)
 textColor="#FAFAFA" # Light text for readability
 font="sans serif"
