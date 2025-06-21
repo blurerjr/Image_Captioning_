@@ -1,4 +1,4 @@
 streamlit>=1.26.0
-transformers
+transformers==4.10.0
 torch
 Pillow
