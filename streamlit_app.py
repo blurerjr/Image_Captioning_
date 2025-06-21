@@ -5,13 +5,11 @@ import io
 from transformers import AutoProcessor, BlipForConditionalGeneration
 
 # --- Streamlit Page Configuration ---
-# FIX IS HERE: Use st.set_page_config, not st.set_config
 st.set_page_config(page_title="BLIP Image Captioning App", page_icon="📝", layout="centered")
 st.title("📝 Image Captioning with BLIP")
 st.markdown("---") # Visual separator
 
-# Inject custom CSS for more fine-grained control, e.g., for specific text colors or hover effects
-# This CSS will override the default Streamlit styles for these elements.
+# Inject custom CSS for more fine-grained control
 st.markdown(
     """
     <style>
@@ -35,14 +33,22 @@ st.markdown(
         margin-bottom: 0.5em;
     }
 
-    /* Styling for the individual caption lines */
-    .caption-item {
-        color: #FAFAFA; /* Light text for captions */
+    /* Style for the labels of the text areas (Caption 1, Caption 2, etc.) */
+    /* This targets the internal label of st.text_area */
+    .stTextArea label {
+        color: #E0E0E0 !important; /* Make labels light grey */
         font-size: 1.1em;
-        padding-left: 10px;
-        border-left: 3px solid #90EE90; /* A subtle green line on the left */
-        margin-bottom: 8px;
+        font-weight: bold;
     }
+    /* Style for the text area itself */
+    .stTextArea textarea {
+        background-color: #2D2D2D !important; /* Match secondaryBackgroundColor */
+        color: #FAFAFA !important; /* Light text inside the text area */
+        border: 1px solid #444444; /* Darker border */
+        border-radius: 5px;
+        padding: 10px;
+    }
+
 
     /* Adjust sidebar background to match if needed, though config.toml should handle base */
     [data-testid="stSidebar"] {
@@ -149,9 +155,18 @@ if uploaded_file is not None:
         st.success("Captions Generated!")
         # Use HTML for a custom-styled subheader
         st.markdown('<p class="caption-subheader">Here are the generated captions:</p>', unsafe_allow_html=True)
+        
+        # --- NEW CODE FOR CAPTION DISPLAY ---
+        # Create columns to arrange the text areas
+        # Adjust column widths based on how many captions you typically generate
+        # For 3 captions, [1, 1, 1] would make them equal width across.
+        # For better vertical stacking, no columns are strictly needed, but it helps align.
+        
+        # If you want them to stack vertically, simply loop without columns:
         for i, caption in enumerate(captions):
-            # Use HTML for custom-styled caption items
-            st.markdown(f'<p class="caption-item">**Caption {i+1}:** {caption}</p>', unsafe_allow_html=True)
+            st.text_area(f"Caption {i+1}", value=caption, height=70, key=f"caption_output_{i}", disabled=True)
+        # --- END NEW CODE ---
+
 else:
     st.info("Upload an image to begin captioning!")
 
