@@ -40,18 +40,19 @@ st.markdown(
         font-weight: bold;
     }
     /* Style for the text area itself */
-    /* Targeting the actual textarea element within the streamlit container */
     .stTextArea div[data-baseweb="textarea"] textarea {
-        background-color: #3A3A3A !important; /* A slightly darker grey than #2D2D2D for better contrast */
-        color: #FFFFFF !important; /* Force text to be white */
-        border: 1px solid #555555; /* A slightly darker border */
+        background-color: #3A3A3A !important; /* Keep background dark grey */
+        color: #FFFFFF !important; /* Force text to be pure white */
+        border: 1px solid #555555; /* A clear border */
         border-radius: 5px;
         padding: 10px;
         /* font-family: monospace; /* Optional: Uncomment if you want monospace font */
     }
-    /* Style for the non-editable text areas in disabled state */
+    /* Make disabled text areas very clear (override default dimming) */
     .stTextArea div[data-baseweb="textarea"] textarea:disabled {
-        opacity: 0.9; /* Maintain good visibility even if disabled */
+        color: #FFFFFF !important; /* Force text to be pure white even when disabled */
+        -webkit-text-fill-color: #FFFFFF !important; /* For Safari/Chrome on disabled text */
+        opacity: 1 !important; /* Crucial: Ensure full opacity */
     }
 
 
