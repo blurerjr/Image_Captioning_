@@ -23,8 +23,11 @@ model, feature_extractor, tokenizer = load_model()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
 
-max_length = 16
-num_beams = 4
+# --- CHANGE HERE ---
+# Use greedy search if beam search is causing issues.
+# For better quality, try Option 2 (update transformers version) or Option 3 (different model).
+max_length = 64 # Changed to match your Gradio example's default
+num_beams = 1  # THIS IS THE KEY CHANGE for greedy search
 gen_kwargs = {"max_length": max_length, "num_beams": num_beams}
 
 def predict_caption(image_data):
@@ -42,8 +45,11 @@ def predict_caption(image_data):
     pixel_values = pixel_values.to(device)
 
     output_ids = model.generate(pixel_values, **gen_kwargs)
+
+    # Simplified clean_text from your Gradio example
     preds = tokenizer.batch_decode(output_ids, skip_special_tokens=True)
-    return preds[0].strip()
+    return preds[0].strip().replace('<|endoftext|>','').split('\n')[0]
+
 
 # File uploader
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
