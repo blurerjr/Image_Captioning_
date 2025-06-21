@@ -5,7 +5,7 @@ import io
 from transformers import AutoProcessor, BlipForConditionalGeneration
 
 # --- Streamlit Page Configuration ---
-st.set_config(page_title="BLIP Image Captioning App", page_icon="📝", layout="centered")
+st.set_page_config(page_title="BLIP Image Captioning App", page_icon="📝", layout="centered")
 st.title("📝 Image Captioning with BLIP")
 st.markdown("---") # Visual separator
 
