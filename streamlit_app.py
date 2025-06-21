@@ -32,19 +32,19 @@ st.markdown(
         margin-top: 1em;
         margin-bottom: 0.5em;
     }
-
-    /* Style for the labels of the text areas (Caption 1, Caption 2, etc.) */
+    
+/* Style for the labels of the text areas (Caption 1, Caption 2, etc.) */
     /* This targets the internal label of st.text_area */
     .stTextArea label {
-        color: #E0E0E0 !important; /* Make labels light grey */
+        color: #FFFFFF !important; /* Pure white for labels */
         font-size: 1.1em;
         font-weight: bold;
     }
     /* Style for the text area itself */
     .stTextArea textarea {
-        background-color: #2D2D2D !important; /* Match secondaryBackgroundColor */
-        color: #FAFAFA !important; /* Light text inside the text area */
-        border: 1px solid #444444; /* Darker border */
+        background-color: #2D2D2D !important; /* Keep background dark grey for contrast */
+        color: #FFFFFF !important; /* Pure white for text inside the text area */
+        border: 1px solid #666666; /* Slightly lighter border for visibility */
         border-radius: 5px;
         padding: 10px;
     }
