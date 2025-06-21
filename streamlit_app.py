@@ -26,7 +26,7 @@ processor, model = load_blip_model()
 # Check if CUDA is available, otherwise use CPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
-st.sidebar.info(f"Running on: **{device.upper()}**")
+st.sidebar.info(f"Running on: **{device.type.upper()}**") # FIX IS HERE
 
 # --- Caption Generation Function ---
 def generate_blip_captions(image_pil, max_length=50, num_beams=4, num_return_sequences=3):
@@ -46,18 +46,15 @@ def generate_blip_captions(image_pil, max_length=50, num_beams=4, num_return_seq
         image_pil = image_pil.convert("RGB")
 
     # Process the image for the model
-    # BLIP's AutoProcessor handles both image normalization and tokenization
     inputs = processor(images=image_pil, return_tensors="pt").to(device)
 
     # Generate captions
-    # Note: BLIP uses 'max_new_tokens' instead of 'max_length' for generation length control
-    # And it also supports `num_return_sequences` directly.
     output_ids = model.generate(
         **inputs,
         max_new_tokens=max_length,
         num_beams=num_beams,
         num_return_sequences=num_return_sequences,
-        early_stopping=True # Stop beam search when all beams have finished
+        early_stopping=True
     )
 
     # Decode the generated IDs to human-readable text
