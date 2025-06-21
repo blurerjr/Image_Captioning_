@@ -5,8 +5,8 @@ import io
 from transformers import AutoProcessor, BlipForConditionalGeneration
 
 # --- Streamlit Page Configuration ---
-st.set_page_config(page_title="BLIP Image Captioning App", page_icon="📝", layout="centered")
-st.title("📝 Image Captioning with BLIP")
+st.set_page_config(page_title="C-L-A Image Captioning App", page_icon="📝", layout="centered")
+st.title("📝 Image Captioning with CNN-LSTM and Attention (C-L-A)")
 st.markdown("---") # Visual separator
 
 # Inject custom CSS for more fine-grained control
@@ -170,6 +170,6 @@ else:
 
 st.markdown("---")
 st.markdown("""
-This application utilizes the **Salesforce BLIP (Bootstrapping Language-Image Pre-training)** model from Hugging Face Transformers.
-BLIP is a powerful model designed for unified vision-language understanding and generation, providing robust image captioning capabilities.
+This application utilizes the **CNN, LSTM and Attention Mechanism)** model and based on DenseNet pretained feature extraction.
+C-L-A is a powerful model designed for unified vision-language understanding and generation, providing robust image captioning capabilities.
 """)
