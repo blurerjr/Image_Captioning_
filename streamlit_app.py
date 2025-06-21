@@ -9,58 +9,72 @@ st.set_page_config(page_title="BLIP Image Captioning App", page_icon="📝", lay
 st.title("📝 Image Captioning with BLIP")
 st.markdown("---") # Visual separator
 
-# --- Theme Management ---
-# Initialize theme in session state if not already set
-if "theme" not in st.session_state:
-    st.session_state.theme = "dark" # Default to dark theme
-
-# Define CSS for dark and light themes
-DARK_THEME_CSS = """
+# Inject custom CSS for more fine-grained control
+st.markdown(
+    """
     <style>
+    /* Main App Background (if config.toml isn't enough, this is more forceful) */
     .stApp {
-        background-color: #1E1E1E; /* Very dark grey */
-        color: #FAFAFA; /* Light text for main app */
+        background-color: #1E1E1E; /* A very dark grey */
+        color: #FAFAFA; /* Light text color for the main app */
     }
+
+    /* Adjusting header/title color if needed */
     h1, h2, h3, h4, h5, h6 {
         color: #E0E0E0; /* Slightly lighter grey for headers */
     }
+
+    /* Style for the "Generated Captions" subheader */
     .caption-subheader {
-        color: #90EE90; /* Light green, accent color */
-        font-size: 1.8em;
+        color: #90EE90; /* Light green, matching primaryColor */
+        font-size: 1.8em; /* Slightly larger */
         font-weight: bold;
         margin-top: 1em;
         margin-bottom: 0.5em;
     }
+
+    /* Style for the labels of the text areas (Caption 1, Caption 2, etc.) */
     .stTextArea label {
         color: #FFFFFF !important; /* Pure white for labels */
         font-size: 1.1em;
         font-weight: bold;
     }
+    /* Style for the text area itself */
+    /* Targeting the actual textarea element within the streamlit container */
     .stTextArea div[data-baseweb="textarea"] textarea {
-        background-color: #3A3A3A !important; /* Darker grey for text area background */
-        color: #FFFFFF !important; /* Pure white for text inside */
-        border: 1px solid #555555;
+        background-color: #3A3A3A !important; /* A slightly darker grey than #2D2D2D for better contrast */
+        color: #FFFFFF !important; /* Force text to be white */
+        border: 1px solid #555555; /* A slightly darker border */
         border-radius: 5px;
         padding: 10px;
+        /* font-family: monospace; /* Optional: Uncomment if you want monospace font */
     }
+    /* Style for the non-editable text areas in disabled state */
     .stTextArea div[data-baseweb="textarea"] textarea:disabled {
-        opacity: 0.9;
+        opacity: 0.9; /* Maintain good visibility even if disabled */
     }
+
+
+    /* Adjust sidebar background to match if needed, though config.toml should handle base */
     [data-testid="stSidebar"] {
-        background-color: #2D2D2D; /* Dark sidebar */
-        color: #FAFAFA; /* Sidebar text color */
+        background-color: #2D2D2D; /* Match secondaryBackgroundColor */
+        color: #FAFAFA;
     }
-    [data-testid="stSidebar"] .st-ea {
-        color: #FAFAFA; /* st.info text color */
-        background-color: #3A3A3A;
+
+    /* Style for the 'Running on: **DEVICE**' info in sidebar */
+    [data-testid="stSidebar"] .st-ea { /* Targets the specific element Streamlit uses for st.info */
+        color: #FAFAFA;
+        background-color: #3A3A3A; /* Slightly different shade for info box */
         border-radius: 5px;
         padding: 5px;
         margin-top: 10px;
         margin-bottom: 10px;
     }
+
+    /* Buttons style for better dark theme look */
     .stButton>button {
-        background-color: #90EE90; /* Light green button */
-        color: #1E1E1E;
+        background-color: #90EE90; /* Light green background */
+        color: #1E1E1E; /* Dark text on button */
         border-radius: 5px;
         border: none;
         padding: 10px 20px;
@@ -68,93 +82,21 @@ DARK_THEME_CSS = """
         transition: background-color 0.3s ease;
     }
     .stButton>button:hover {
-        background-color: #76C776;
+        background-color: #76C776; /* Slightly darker green on hover */
         color: #1E1E1E;
     }
     </style>
-"""
-
-LIGHT_THEME_CSS = """
-    <style>
-    .stApp {
-        background-color: #FFFFFF; /* Pure white */
-        color: #333333; /* Dark text for main app */
-    }
-    h1, h2, h3, h4, h5, h6 {
-        color: #222222; /* Darker grey for headers */
-    }
-    .caption-subheader {
-        color: #008000; /* Darker green, accent color */
-        font-size: 1.8em;
-        font-weight: bold;
-        margin-top: 1em;
-        margin-bottom: 0.5em;
-    }
-    .stTextArea label {
-        color: #333333 !important; /* Force dark text for labels in light mode */
-        font-size: 1.1em;
-        font-weight: bold;
-    }
-    .stTextArea div[data-baseweb="textarea"] textarea {
-        background-color: #F0F0F0 !important; /* Light grey for text area background */
-        color: #333333 !important; /* Force dark text inside in light mode */
-        border: 1px solid #BBBBBB;
-        border-radius: 5px;
-        padding: 10px;
-    }
-    .stTextArea div[data-baseweb="textarea"] textarea:disabled {
-        opacity: 0.9; /* Maintain good visibility */
-    }
-    [data-testid="stSidebar"] {
-        background-color: #F5F5F5; /* Light sidebar */
-        color: #333333; /* Sidebar text color in light mode */
-    }
-    [data-testid="stSidebar"] .st-ea {
-        color: #333333; /* st.info text color in light mode */
-        background-color: #E0E0E0;
-        border-radius: 5px;
-        padding: 5px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-    .stButton>button {
-        background-color: #008000; /* Green button */
-        color: #FFFFFF; /* White text on button */
-        border-radius: 5px;
-        border: none;
-        padding: 10px 20px;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-    }
-    .stButton>button:hover {
-        background-color: #006400; /* Darker green on hover */
-        color: #FFFFFF;
-    }
-    </style>
-"""
-
-# Inject the appropriate CSS based on the current theme
-if st.session_state.theme == "dark":
-    st.markdown(DARK_THEME_CSS, unsafe_allow_html=True)
-else:
-    st.markdown(LIGHT_THEME_CSS, unsafe_allow_html=True)
-
-# --- Theme Toggle Button ---
-def toggle_theme():
-    if st.session_state.theme == "dark":
-        st.session_state.theme = "light"
-    else:
-        st.session_state.theme = "dark"
-
-# Place the toggle button in the sidebar for easy access
-st.sidebar.button(
-    f"Switch to {'Light' if st.session_state.theme == 'dark' else 'Dark'} Mode",
-    on_click=toggle_theme
+    """,
+    unsafe_allow_html=True
 )
+
 
 # --- Model Loading (Cached for Performance) ---
 @st.cache_resource
 def load_blip_model():
+    """
+    Loads the BLIP model and processor, caching them for efficient Streamlit reruns.
+    """
     processor = AutoProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
     model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
     return processor, model
@@ -162,12 +104,16 @@ def load_blip_model():
 processor, model = load_blip_model()
 
 # --- Device Configuration ---
+# Check if CUDA is available, otherwise use CPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
 st.sidebar.info(f"Running on: **{device.type.upper()}**")
 
 # --- Caption Generation Function ---
 def generate_blip_captions(image_pil, max_length=50, num_beams=4, num_return_sequences=3):
+    """
+    Generates captions for a given PIL Image using the BLIP model.
+    """
     if image_pil.mode != "RGB":
         image_pil = image_pil.convert("RGB")
 
@@ -196,6 +142,7 @@ selected_num_beams = st.sidebar.slider("Number of Beams", min_value=1, max_value
 selected_num_return_sequences = st.sidebar.slider("Number of Captions to Generate", min_value=1, max_value=5, value=3, step=1)
 
 if uploaded_file is not None:
+    # Display the uploaded image
     image = Image.open(uploaded_file)
     st.image(image, caption='Uploaded Image.', use_column_width=True)
     st.write("")
@@ -211,6 +158,7 @@ if uploaded_file is not None:
             )
         
         st.success("Captions Generated!")
+        # Use HTML for a custom-styled subheader
         st.markdown('<p class="caption-subheader">Here are the generated captions:</p>', unsafe_allow_html=True)
         
         for i, caption in enumerate(captions):
