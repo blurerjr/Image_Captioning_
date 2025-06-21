@@ -15,7 +15,6 @@ if "theme" not in st.session_state:
     st.session_state.theme = "dark" # Default to dark theme
 
 # Define CSS for dark and light themes
-# These colors should be consistent with what you want
 DARK_THEME_CSS = """
     <style>
     .stApp {
@@ -49,10 +48,10 @@ DARK_THEME_CSS = """
     }
     [data-testid="stSidebar"] {
         background-color: #2D2D2D; /* Dark sidebar */
-        color: #FAFAFA;
+        color: #FAFAFA; /* Sidebar text color */
     }
     [data-testid="stSidebar"] .st-ea {
-        color: #FAFAFA;
+        color: #FAFAFA; /* st.info text color */
         background-color: #3A3A3A;
         border-radius: 5px;
         padding: 5px;
@@ -92,26 +91,26 @@ LIGHT_THEME_CSS = """
         margin-bottom: 0.5em;
     }
     .stTextArea label {
-        color: #333333 !important; /* Dark text for labels */
+        color: #333333 !important; /* Force dark text for labels in light mode */
         font-size: 1.1em;
         font-weight: bold;
     }
     .stTextArea div[data-baseweb="textarea"] textarea {
         background-color: #F0F0F0 !important; /* Light grey for text area background */
-        color: #333333 !important; /* Dark text inside */
+        color: #333333 !important; /* Force dark text inside in light mode */
         border: 1px solid #BBBBBB;
         border-radius: 5px;
         padding: 10px;
     }
     .stTextArea div[data-baseweb="textarea"] textarea:disabled {
-        opacity: 0.9;
+        opacity: 0.9; /* Maintain good visibility */
     }
     [data-testid="stSidebar"] {
         background-color: #F5F5F5; /* Light sidebar */
-        color: #333333;
+        color: #333333; /* Sidebar text color in light mode */
     }
     [data-testid="stSidebar"] .st-ea {
-        color: #333333;
+        color: #333333; /* st.info text color in light mode */
         background-color: #E0E0E0;
         border-radius: 5px;
         padding: 5px;
@@ -120,7 +119,7 @@ LIGHT_THEME_CSS = """
     }
     .stButton>button {
         background-color: #008000; /* Green button */
-        color: #FFFFFF;
+        color: #FFFFFF; /* White text on button */
         border-radius: 5px;
         border: none;
         padding: 10px 20px;
