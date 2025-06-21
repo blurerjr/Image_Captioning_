@@ -33,22 +33,26 @@ st.markdown(
         margin-bottom: 0.5em;
     }
     
-/* Style for the labels of the text areas (Caption 1, Caption 2, etc.) */
-    /* This targets the internal label of st.text_area */
+    /* Style for the labels of the text areas (Caption 1, Caption 2, etc.) */
     .stTextArea label {
         color: #FFFFFF !important; /* Pure white for labels */
         font-size: 1.1em;
         font-weight: bold;
     }
     /* Style for the text area itself */
-    .stTextArea textarea {
-        background-color: #2D2D2D !important; /* Keep background dark grey for contrast */
-        color: #FFFFFF !important; /* Pure white for text inside the text area */
-        border: 1px solid #666666; /* Slightly lighter border for visibility */
+    /* Targeting the actual textarea element within the streamlit container */
+    .stTextArea div[data-baseweb="textarea"] textarea {
+        background-color: #3A3A3A !important; /* A slightly darker grey than #2D2D2D for better contrast */
+        color: #FFFFFF !important; /* Force text to be white */
+        border: 1px solid #555555; /* A slightly darker border */
         border-radius: 5px;
         padding: 10px;
+        font-family: monospace; /* Optional: Use monospace for code-like appearance if desired */
     }
-
+    /* Style for the non-editable text areas in disabled state */
+    .stTextArea div[data-baseweb="textarea"] textarea:disabled {
+        opacity: 0.9; /* Maintain good visibility even if disabled */
+    }
 
     /* Adjust sidebar background to match if needed, though config.toml should handle base */
     [data-testid="stSidebar"] {
